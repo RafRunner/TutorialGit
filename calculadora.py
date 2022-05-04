@@ -1,18 +1,18 @@
-primeiro_numero = int(input('Entre com o primeiro número: '))
+operacao = input('Entre com a operação: ')
 
-operacao = int(input('Entre com a operação: '))
+primeiro_numero = int(input('Entre com o primeiro número: '))
 
 segundo_numero = int(input('Entre com o segundo número: '))
 
 resultado = None
 
-if operacao == 1:
+if operacao == 'soma':
     resultado = primeiro_numero + segundo_numero
-if operacao == 2:
+if operacao == 'subtração':
     resultado = primeiro_numero - segundo_numero
-if operacao == 3:
+if operacao == 'multiplicação':
     resultado = primeiro_numero * segundo_numero
-if operacao == 4:
+if operacao == 'divisão':
     resultado = primeiro_numero / segundo_numero
 
 print('Resultado:', resultado)
