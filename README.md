@@ -16,9 +16,58 @@ Além disso, como o git não é um software que funciona em tempo real, quando v
 
 E agora você me pergunta: então o que é o GitHub? Simples, é necessário um servidor para hospedar o repositório remoto do git para que todos os desenvolvedores tenham acesso a ele. O GitHub é um dos serviços que proveem isso e outras funcionalidades bônus como: revisão (e até edição) de código, resolução de conflitos, criação de projetos, criação de ramificações, solicitações de merge, navegação pelo código e muitas outras no próprio site, sem a necessidade de clonar o projeto localmente. Ou seja, o GitHub é nada mais nada menos que um servidor onde são hospedados diversos projetos versionados pelo git com outras funcionalidades para facilitar a vida dos desenvolvedores. Eles não são a mesma coisa, são complementares. Existem outros sites de hospedagem de projetos git que de certa forma competem com o GitHub, como o GitLab, Assembla, Bitbucket e outros.
 
-## Como usar o git?
+## Como usar o git
 
-## Como usar o GitHub?
+A melhor forma de aprender a usar o git, é usando a linha de comando. Dessa forma, independentemente do editor de texto, sistema operacional ou até mesmo se você tem ou não acesso a uma interface gráfica (como em um servidor) você não estará totalmente perdido e conseguirá fazer o que quer.
+
+Lembre-se que você sempre pode pesquisar na internet como fazer certas coisas, a sintaxe pode ser um pouco complicada, mas para isso é bom intender os conceitos do git para saber o que pesquisar. O git também tem uma documentação própria muito boa. Para utiliza-la basta adicionar a opção `--help` no fim de algum comando. Por exemplo:
+
+    git --help
+
+irá te mostrar os comandos existentes do git e as possessives opções. Para ver ajuda de um comando específico, coloque o nome do comando antes de help, como:
+
+    git commit --help
+
+Além disso, é muito bom que você crie um arquivo seu onde você anota os comandos que considerar mais importantes juntamente com a explicação de cada um nas suas palavras. Esse arquivo vai ser um recurso muito importante ao londo da sua jornada.
+
+Antes de mais nada, você primeiro deve configurar qual será seu nome e email de forma global (para todos os projetos que você trabalhar no computador atual) no git. Eles serão usado para te identificar entre os commits e contribuidores de um projeto. Caso você já tenha uma conta no GitHub, é bom que você use o mesmo email que sua conta, e de preferência use seu nome completo ou primeiro + último nome como o nome:
+
+    git config --global user.name "Seu nome completo"
+    git config --global user.email "Seu email"
+
+Ok, então para começar a usar o git você precisa criar um repositório git ou clonar um já existente. Vamos começar criando um do zero. Navegue até a pasta onde você quer criar o repositório pelo terminal e então execute:
+
+    git init
+
+Isso irá criar uma pasta escondida, a `.git`, onde o git guardará informações relevantes do projeto. Não mexa nessa pasta manualmente!
+
+Agora crie um arquivo qualquer, pode ser um README.md (arquivo no formato markdown presente em quase qualquer projeto que geralmente contêm descrições de como instalar,compilar ou contribuir para o projeto) e insira algumas linhas de texto quaisquer. Note que por padrão, o git não irá "acompanhar" novos arquivos criados no projeto. Execute `git status` e veja que o arquivo aparece abaixo de "Untracked files". Para adicionar o arquivo no projeto, é necessário usar o comando:
+
+    git add README.md
+
+Execute novamente o `git status` e note que o arquivo aparece agora sob "Changes to be committed" com a cor verde. É bom saber que, caso você não queira digitar o nome do arquivo criado ou adicionar múltiplos arquivos ao mesmo tempo você pode executar o comando acima como `git add .` , porém tome cuidado para não adicionar arquivos sem querer.
+
+Assim que estiver satisfeito com suas modificações, vamos criar um commit. Para isso, usamos o comando:
+
+    git commit -m "Sua mensagem de commit aqui"
+
+Agora, faça algumas modificações no arquivo README: adicione linhas, remova linhas, edite linhas, faça o que desejar. Caso queira você pode também adicionar um novo arquivo qualquer. Após salvar os arquivos, para ver exatamente quais mudanças foram feitas, execute: `git diff`. Você deve ver uma saída como:
+
+![git diff output](./imagens/git%20diff%20output.png)
+
+Para confirmar que o commit foi feito, é bom executar o comando
+
+    git log
+
+Ele irá te mostrar uma lista com cada commit na branch atual (que, caso você tenha seguido o tutorial até aqui, é a principal e a única que existe) com informações como o hash, nome e email do autor (por isso a importância de configura-los), data e hora do commit e a mensagem de commit. Caso queira ver uma versão resumida do log, use `git log --oneline` onde só será mostrado o hash e a mensagem de cada commit.
+
+Outra coisa importante: muitas vezes, temos arquivos dentro do projeto que não queremos incluir no git, por serem dependências muito grandes ou então arquivos de configuração do editor, que variam de desenvolvedor para desenvolvedor. Para evitar que os arquivos sejam adicionados no git deve ser criado o arquivo `.gitignore` . Nesse arquivos temos esse arquivo, ele tem uma linha com `__pycache__/` , o que significa que todas as pastas com esse nome serão ignoradas, já que são apenas caches do python. Leia mais sobre esses arquivos e o que pode ser feito neles no seguinte link (em inglês):
+
+https://github.com/kenmueller/gitignore
+
+Agora você já tem o básico para usar o git localmente. Na próxima parte, você vai aprender a usar o GitHub (e qualquer outro servidor de git) e trabalhar com projetos remotos e com outros desenvolvedores.
+
+## Como usar o GitHub (e repositórios remotos do git de forma geral)
 
 ## Os principais e mais usados comandos do git
 
