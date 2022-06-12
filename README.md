@@ -84,6 +84,16 @@ Agora você já tem o básico para usar o git localmente. Na próxima parte, voc
 
 ## Como usar o GitHub (e repositórios remotos do git de forma geral)
 
-## Os principais e mais usados comandos do git
+Agora que você já tem uma noção de como usar o git localmente, é importante ter as noções básicas de como usar o GitHub (e caso você saiba como usar o GitHub, você rapidamente aprenderá a usar qualquer repositório de git online). Primeiro, para clonar um repositório git, você precisa do seu link do git. Ele pode ser encontrado em:
+
+![Copiar url para download](./imagens/download%20code.png)
+
+Idealmente você deve utilizar links do protocolo "SSH", pois é uma forma melhor de se identificar em repositórios online sem precisar se autentificar. Porém esse protocolo pode falhar em projetos que você não tem permissão para editar diretamente ou caso você configure suas chaves ssh corretamente. Para fazer isso, siga o tutorial do próprio GitHub:
+
+https://docs.github.com/en/authentication/connecting-to-github-with-ssh
+
+Quando você tiver o link do repositório copiado, navegue pelo terminal até o local onde quiser salvar o projeto (muitas pessoas gostam de criar um pasta github/ para isso) e execute:
+
+    git clone <link do reposiório.git>
 
 Esse repositório foi inicialmente criado com o propósito de servir como um mini curso/palestra organizado pelo Centro Acadêmico do curso de Engenharia da Computação da Universidade Federal de Goiás, idealizado por Rafael Nunes Santana.
