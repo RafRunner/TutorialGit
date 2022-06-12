@@ -2,7 +2,7 @@
 
 Olá! Nesse repositório temos como objetivo fornecer um projeto extremamente simples (apenas dois arquivos) em python usando conceitos muito simples da linguagem para ter o maior nível de acessibilidade possível.
 
-Com esse projeto podemos demonstrar as funcionalidades mais básicas do git: clone, branch, add, commit, push, pull, merge etc incentivando os participantes a clonarem o projeto, fazerem modificações em suas próprias branches/repositórios e depois commitar e pushar para um repositório git remoto (no caso, no github). Utilizaremos também a funcionalidade de fork e merge requests para dar uma ideia de como é o processo para contribuir em projetos open source (código aberto).
+Com esse projeto podemos demonstrar as funcionalidades mais básicas do git: clone, branch, add, commit, push, pull, merge etc incentivando os participantes a clonarem o projeto, fazerem modificações em suas próprias branches/repositórios e depois commitar e pushar para um repositório git remoto (no caso, no GitHub). Utilizaremos também a funcionalidade de fork e merge requests para dar uma ideia de como é o processo para contribuir em projetos open source (código aberto).
 
 ## O que é o git? Pra que ele serve? É a mesma coisa de GitHub?
 
@@ -59,7 +59,6 @@ Para confirmar que o commit foi feito, é bom executar o comando
 
 Ele irá te mostrar uma lista com cada commit na branch atual (que, caso você tenha seguido o tutorial até aqui, é a principal e a única que existe) com informações como o hash, nome e email do autor (por isso a importância de configura-los), data e hora do commit e a mensagem de commit. Caso queira ver uma versão resumida do log, use `git log --oneline` onde só será mostrado o hash e a mensagem de cada commit.
 
-
 Agora, faça algumas modificações no arquivo README: adicione linhas, remova linhas, edite linhas, faça o que desejar. Caso queira você pode também adicionar um novo arquivo qualquer. Após salvar os arquivos, para ver exatamente quais mudanças foram feitas, execute: `git diff`. Você deve ver uma saída como:
 
 ![git diff output](./imagens/git%20diff%20output.png)
@@ -92,8 +91,72 @@ Idealmente você deve utilizar links do protocolo "SSH", pois é uma forma melho
 
 https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 
+Copiar diretamente o link de um repositório público de outro usuário como na imagem é ok caso você queira somente utilizar ou estudar o código ou fazer apenas modificações locais. Agora, caso você queira salvar no próprio GitHub suas modificações criando uma versão sua do projeto (cheque a licença antes de fazer isso) ou sujerir modificações para o projeto original, você deve fazer um "fork" (bifurcação) do projeto antes:
+
+![Fazer uma bifurcação](./imagens/fork.png)
+
+Com isso basta confirmar se todas as informações estão corretas e uma cópia do projeto original será criado para seu usuário! Copie então o link do repositório que está em seu novo para prosseguir.
+
 Quando você tiver o link do repositório copiado, navegue pelo terminal até o local onde quiser salvar o projeto (muitas pessoas gostam de criar um pasta github/ para isso) e execute:
 
     git clone <link do reposiório.git>
+
+Esse comando deve criar uma pasta com o nome do projeto onde ele foi executado, você deve então navegar até a pasta do projeto para poder trabalhar nele. Falamos um pouco sobre branches na introdução, então agora vamos aprender a trabalhar com elas: Para saber em qual branch você está, você pode usar o próprio comando `git status`:
+
+![Output do git status](./imagens/git%20status.png)
+
+Como podemos ver, estamos na branch master e tudo está atualizado com o repositório remoto. Mas veja, o git julga que estamos atualizados com base na cópia do repositório remoto que temos localmente, para saber se realmente estamos atualizados, devemos sempre executar periodicamente `git fetch`, esse comando irá nos avisar quando algo foi alterado no repositório remoto, e podemos puxar essas modificações para nossa versão local com o comando `git pull`, mas lembre-se de somente executar o comando pull quando você não tiver nenhuma modificação local não commitada, ou ele irá falhar. Mesmo assim, existe a chance de nos depararmos com um conflito, mas tratarei disso futuramente.
+
+É sempre bom verificar quais outras branches existem em um projeto. Para isso podemos usar:
+
+    git branch          # listará somente as branches locais
+    git branch -a       # listará todas as branches, locais e remotas
+    git branch -r       # listará somente as branches remotas
+
+![Output do git branch -a](./imagens/git%20branch.png)
+
+Como vemos nas saída do comando, as branches remotas são as que iniciam com `remotes/` e são seguidas, nesse caso de `origin/` (origin é o nome do repositório remoto aqui, 90% das vezes os projetos terão somente um repositório remoto e seu nome será "origin", mas nem sempre isso é verdade). As branches remotas são aquelas que tem somente o seu nome, e o * serve para marcar em qual branch estamos atualmente. Note que temos duas branches master! uma local e uma remota, pois, como disso, o git não faz alterações em tempo real no repositório remoto, e as duas se comportam como entidades diferentes. Você não pode dar "checkout" em uma branch remota diretamente (não pode alterá-la diretamente) mas pode criar uma cópia local da mesma e "empurrar" (push) suas alterações para o remoto.
+
+Vamos dar checkout na branch mais-operações:
+
+    git checkout -b mais-operações origin/mais-operações
+
+Como não temos uma cópia local dessa branch, precisamos da flag `-b <nome da branch>` para indicar que queremos criar uma nova branch local com esse nome baseado na branch remota `origin/mais-operações`. Os nomes das branches locais e remotas não precisam coincidir, mas é sempre bom que coincidam. Veja que alguns arquivos foram alterados. Execute novamente os comandos `git status` e `git branch -a` para ver o que mudou. Para voltar à branch master (e para trocar para uma branch local qualquer) o comando é mais simples:
+
+    git checkout master
+
+Ok, agora vamos criar uma nova branch para fazer nossas modificações. Por padrão, você nunca deve trabalhar na branch principal do projeto (geralmente chamada master, main, develop, etc) para garantir que a branch principal sempre esteja 100% funcional, portanto criamos uma branch nova e damos checkout para ela com:
+
+    git checkout -b nova-branch
+
+Faça as modificações que desejar, e crie um commit seguindo o guia anterior. Agora, você precisa "empurrar" suas modificações para o repositório remoto:
+
+    git push --set-upstream origin nova-branch
+
+Note que tudo após `git push` só é necessário caso a branch não exista ainda no remoto (ou seja, no primeiro push).
+
+Perfeito! Agora as modificações já estão na nova branch. Assumindo que tudo esteja funcionando como desejado, o próximo passo é fazer um chamado "pull request" (as vezes chamado de "merge request") da sua branch para a master. Essa solicitação de mesclagem serve para indicar que você acredita que o que está nessa branch é desejado pelo projeto e deve estar na master, e em projetos grandes são revisadas por outras pessoas, que irão aceitar ou não a solicitação, fazendo críticas e sugestões. Quando estiver trabalhando sozinho, você mesmo deve aceitar suas solicitações de mesclagem.
+
+![Criar pull request](./imagens/pull%20request%201.png)
+
+![Informações do pull request](./imagens/pull%20request%202.png)
+
+Nessa página podemos selecionar quais duas branches estamos comparando (veja que aqui queremos fazer a mesclagem da "mais-operações" na "master"). Caso você tenha feito um fork de outro projeto, deve selecionar se está fazendo uma solicitação de merge para o repositório original (ou seja, você irá sugerir mudanças no projeto original e deve garantir que está seguindo todas as diretrizes do projeto) ou para a sua própria versão do projeto. Você pode ver também um resumo dos arquivos alterados e uma comparação linha a linha do que foi modificado, para garantir que estamos criando a solicitação corretamente. Confirmando a criação do pull request, você deve escolher um título e descrição que façam sentido para o que está sendo modificado (assim como uma explicação detalhada do que está sendo feito caso esteja trabalhando em um projeto grande). O que levará a uma tela que indica se o merge pode ser feito sem conflitos ou não assim como todo um histórico daquela solicitação. Se estiver tudo ok, clique em "Merge pull request".
+
+Pode ser que você encontre conflitos, caso sim, algo como isso deve aparecer no resumo do pull request:
+
+![Resolver conflitos](./imagens/resolver%20conflitos.png)
+
+Clique para resolver conflitos e você será levado a uma página semelhante a um editor de texto, onde você deve, manualmente, passar por cada arquivo com conflito e os marcar como resolvidos:
+
+![Resolvendo conflitos](./imagens/resolver%20pelo%20github.png)
+
+Os conflitos mostram as verões daquela parte do código em ambas as branches, e o seu dever é reescrever aquele trecho de forma que incorpore as mudanças de ambas as partes (sim, é algo bem manual) e no fim apagar todos os ">>>>>>>>>>>>" e "<<<<<<<<<<<", clicando em "Mark as resolved". Isso irá criar um novo commit na branch que está indo para a master com as resoluções, permitindo o merge.
+
+É também possível resolver conflitos pelo editor de texto/ide localmente. Alguns tornam esse processo bem mais simples e outros bem mais complicado, portanto deixo com você pesquisar e aprender como fazer isso localmente.
+
+E é isso! Agora você sabe como criar repositórios git locais, trabalhar com commits e branches, baixar um repositório público ou criar uma bifurcação dele e seguir trabalhando seja na sua versão, ou criando sugestões para o projeto original! Lembre-se, a documentação do próprio git é extremamente completa, e você sempre deve buscar guias e tutoriais para casos específicos que estiver enfrentando, essa é apenas uma introdução para te familiarizar com os conceitos. Não se esqueça também de manter um arquivo com os comandos mais úteis e resoluções para situações que encontrar.
+
+## Informações
 
 Esse repositório foi inicialmente criado com o propósito de servir como um mini curso/palestra organizado pelo Centro Acadêmico do curso de Engenharia da Computação da Universidade Federal de Goiás, idealizado por Rafael Nunes Santana.
