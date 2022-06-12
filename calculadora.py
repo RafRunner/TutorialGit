@@ -6,15 +6,16 @@ operacao = input('Entre com a operação: ')
 
 segundo_numero = int(input('Entre com o segundo número: '))
 
-resultado = None
+# Aqui usamos a funcionalidade do python de poder guardar funções em variáveis
+funcao = None
 
 if operacao == 'soma' or operacao == '+':
-    resultado = operacoes.soma(primeiro_numero, segundo_numero)
+    funcao = operacoes.soma
 if operacao == 'subtração' or operacao == '-':
-    resultado = operacoes.subtracao(primeiro_numero, segundo_numero)
+    funcao = operacoes.subtracao
 if operacao == 'multiplicação' or operacao == '*':
-    resultado = operacoes.multiplicacao(primeiro_numero, segundo_numero)
+    funcao = operacoes.multiplicacao
 if operacao == 'divisão' or operacao == '/':
-    resultado = operacoes.divisao(primeiro_numero, segundo_numero)
+    funcao = operacoes.divisao
 
-print('Resultado:', resultado)
+print('Resultado:', funcao(primeiro_numero, segundo_numero))
