@@ -18,7 +18,7 @@ E agora você me pergunta: então o que é o GitHub? Simples, é necessário um 
 
 ## Como usar o git
 
-A melhor forma de aprender a usar o git, é usando a linha de comando. Dessa forma, independentemente do editor de texto, sistema operacional ou até mesmo se você tem ou não acesso a uma interface gráfica (como em um servidor) você não estará totalmente perdido e conseguirá fazer o que quer. Esse guia foi feito em um sistema Linux, porém os processos podem ser replicados no Windows e MacOS sem problemas.
+A melhor forma de aprender a usar o git, é usando a linha de comando. Dessa forma, independentemente do editor de texto, sistema operacional ou até mesmo se você tem ou não acesso a uma interface gráfica (como em um servidor) você não estará perdido e vai conseguir fazer o que quer. É a melhor forma de entender os conceitos e o que realmente o git faz, mas não há problema algum em usar o git por uma interface gráfica depois de aprender os principais comandos e conceitos. Esse guia foi feito em um sistema Linux, porém os processos podem ser replicados no Windows e MacOS sem problemas.
 
 Lembre-se que você sempre pode pesquisar na internet como fazer certas coisas, a sintaxe pode ser um pouco complicada, mas para isso é bom entender os conceitos do git para saber o que pesquisar. O git também tem uma documentação própria muito boa. Para utiliza-la basta adicionar a opção `--help` no fim de algum comando. Por exemplo:
 
@@ -41,7 +41,7 @@ Ok, então para começar a usar o git você precisa criar um repositório git ou
 
 Isso irá criar uma pasta escondida, a `.git`, onde o git guardará informações relevantes do projeto. Não mexa nessa pasta manualmente!
 
-Agora crie um arquivo qualquer, pode ser um README.md (arquivo no formato markdown presente em quase qualquer projeto que geralmente contêm descrições de como instalar,compilar ou contribuir para o projeto) e insira algumas linhas de texto quaisquer. Note que por padrão, o git não irá "acompanhar" novos arquivos criados no projeto. Execute `git status` e veja que o arquivo aparece abaixo de "Untracked files". Para adicionar o arquivo no projeto, é necessário usar o comando:
+Agora crie um arquivo qualquer, pode ser um README.md (arquivo no formato markdown presente em quase qualquer projeto, que geralmente contêm descrições de como instalar, compilar ou contribuir para o projeto) e insira algumas linhas de texto quaisquer. Por padrão, o git não irá "acompanhar" novos arquivos criados no projeto. Execute `git status` e veja que o arquivo aparece abaixo de "Untracked files". Para adicionar o arquivo no projeto, é necessário usar o comando:
 
     git add README.md
 
@@ -67,7 +67,7 @@ Note que o `git diff` mostra somente modificações em relação ao commit anter
 
     git diff --staged
 
-E caso queira remover um arquivo do staging, execute:
+E caso queira remover um arquivo do staging (pois não deseja que ele entre no commit), execute:
 
     git reset nome_arquivo
 
@@ -75,11 +75,31 @@ Caso queira desfazer todas as suas modificações e voltar ao mesmo estado commi
 
     git reset --hard
 
-Outra coisa importante: muitas vezes, temos arquivos dentro do projeto que não queremos incluir no git, por serem dependências muito grandes ou então arquivos de configuração do editor, que variam de desenvolvedor para desenvolvedor. Para evitar que os arquivos sejam adicionados no git deve ser criado o arquivo `.gitignore` . Nesse arquivos temos esse arquivo, ele tem uma linha com `__pycache__/` , o que significa que todas as pastas com esse nome serão ignoradas, já que são apenas caches do python. Leia mais sobre esses arquivos e o que pode ser feito neles no seguinte link (em inglês):
+Caso você tenha cometido algum erro no seu último commit, você pode desfazê-lo e trazer todas as modificações de volta para o staging com:
+
+    git reset --soft HEAD~1
+
+Porém cuidado! No git, geralmente é bom imaginar que, uma vez criado, todo commit é permanente, pois eles já podem ter sido baixados por outros desenvolvedores, mas existem casos em que é necessário desfazer um ou mais dos commits mais recentes, porém isso deve ser feito apenas se você ainda não tiver feito o push desse commit a ser desfeito ou esteja em uma branch em que somente você está trabalhando. Entrarei em mais detalhes sobre esses conceitos na próxima seção.
+
+Outra coisa importante: muitas vezes, existem arquivos dentro do projeto que não queremos incluir no git, por serem dependências muito grandes, arquivos de configuração do editor que variam de desenvolvedor para desenvolvedor ou mesmo arquivos com dados sensíveis, como senhas ou chaves de APIs. Para evitar que os arquivos sejam adicionados no git, deve ser criado o arquivo `.gitignore` . Nesse projeto, temos esse arquivo, ele tem uma linha com `__pycache__/`, o que significa que todas as pastas com esse nome serão ignoradas, já que são apenas caches do python. Leia mais sobre esses arquivos e o que pode ser feito neles no seguinte link (em inglês):
 
 https://gist.github.com/jstnlvns/ebaa046fae16543cc9efc7f24bcd0e31
 
-Agora você já tem o básico para usar o git localmente. Na próxima parte, você vai aprender a usar o GitHub (e qualquer outro servidor de git) e trabalhar com projetos remotos e com outros desenvolvedores.
+Agora você já tem o básico para usar o git localmente. Na próxima parte, você irá aprender a usar o GitHub (e qualquer outro servidor de git) e trabalhar com projetos remotos e com outros desenvolvedores.
+
+### O stash
+
+Existem algumas ocasiões em que você tem arquivos modificados localmente e precisa fazer uma operação onde não podemos ter arquivos modificados (como dar checkout em outra branch ou executar um `git pull`) e também não é conveniente ou possível fazer um commit. Para isso, existe o stash: um local onde armazenamos modificações não commitadas em arquivos para deixar nosso ambiente "limpo" e podemos aplicá-las mais tarde.
+
+O stash é uma espécie de pilha (stack), onde você pode empilhar várias alterações. Quando você executa o comando `git stash save` ou `git stash` o Git criará um novo stash e o adicionará no topo da pilha. Você também pode fornecer uma mensagem descritiva opcional para identificar facilmente as alterações salvas.
+
+Após salvar as alterações, você pode alternar para outra branch usando o comando "git checkout" ou realizar outras operações sem se preocupar em perder as alterações não commitadas. Quando você estiver pronto para voltar para as alterações salvas, poderá usar o comando `git stash apply` ou `git stash pop`. O `apply` aplicará as alterações do stash no diretório de trabalho atual, mantendo o stash intacto, enquanto o "pop" aplicará as alterações e removerá o stash da pilha.
+
+Além disso, você pode listar todos os stashes disponíveis usando o comando `git stash list` e escolher qual stash deseja aplicar com base em seu índice na pilha (usando `git stash apply stash@{índice}`). Você também pode descartar um stash específico usando o comando `git stash drop` seguido pelo índice do stash ou limpar toda a pilha de stashes usando `git stash clear`.
+
+![Resumo de uso do git stash](./imagens/git%20stash.png)
+
+Em resumo, o comando `git stash` é uma ferramenta poderosa para salvar alterações não commitadas temporariamente, permitindo que você mude de contexto rapidamente sem perder o trabalho em progresso. Ele oferece flexibilidade e conveniência ao lidar com várias tarefas simultaneamente ou quando você precisa alternar entre ramos rapidamente.
 
 ## Como usar o GitHub (e repositórios remotos do git de forma geral)
 
@@ -87,11 +107,11 @@ Agora que você já tem uma noção de como usar o git localmente, é importante
 
 ![Copiar url para download](./imagens/download%20code.png)
 
-Idealmente você deve utilizar links do protocolo "SSH", pois é uma forma melhor de se identificar em repositórios online sem precisar se autentificar. Porém esse protocolo pode falhar em projetos que você não tem permissão para editar diretamente ou caso você configure suas chaves ssh corretamente. Para fazer isso, siga o tutorial do próprio GitHub:
+Idealmente você deve utilizar links do protocolo "SSH", pois é uma forma melhor de se identificar em repositórios online sem precisar se autentificar com usuário e sem toda vez. Porém esse protocolo pode falhar em projetos que você não tem permissão para editar diretamente ou caso você configure suas chaves ssh incorretamente. Para fazer isso, siga o tutorial do próprio GitHub:
 
 https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 
-Copiar diretamente o link de um repositório público de outro usuário como na imagem é ok caso você queira somente utilizar ou estudar o código ou fazer apenas modificações locais. Agora, caso você queira salvar no próprio GitHub suas modificações criando uma versão sua do projeto (cheque a licença antes de fazer isso) ou sujerir modificações para o projeto original, você deve fazer um "fork" (bifurcação) do projeto antes:
+Copiar diretamente o link de um repositório público de outro usuário como na imagem é ok caso você queira somente utilizar ou estudar o código ou fazer apenas modificações locais. Agora, caso você queira salvar no próprio GitHub suas modificações criando uma versão sua do projeto (cheque a licença antes de fazer isso) ou sugerir modificações para o projeto original, você deve fazer um "fork" (bifurcação) do projeto antes:
 
 ![Fazer uma bifurcação](./imagens/fork.png)
 
@@ -115,7 +135,7 @@ Como podemos ver, estamos na branch master e tudo está atualizado com o reposit
 
 ![Output do git branch -a](./imagens/git%20branch.png)
 
-Como vemos nas saída do comando, as branches remotas são as que iniciam com `remotes/` e são seguidas, nesse caso de `origin/` (origin é o nome do repositório remoto aqui, 90% das vezes os projetos terão somente um repositório remoto e seu nome será "origin", mas nem sempre isso é verdade). As branches remotas são aquelas que tem somente o seu nome, e o * serve para marcar em qual branch estamos atualmente. Note que temos duas branches master! uma local e uma remota, pois, como disso, o git não faz alterações em tempo real no repositório remoto, e as duas se comportam como entidades diferentes. Você não pode dar "checkout" em uma branch remota diretamente (não pode alterá-la diretamente) mas pode criar uma cópia local da mesma e "empurrar" (push) suas alterações para o remoto.
+Como vemos nas saída do comando, as branches remotas são as que iniciam com `remotes/` e são seguidas, nesse caso de `origin/` (quase sempre, o nome do repositório remoto padrão será "origin", mas nem sempre isso é verdade). As branches remotas são aquelas que tem somente o seu nome, e o * serve para marcar em qual branch estamos atualmente. Note que temos duas branches master! uma local e uma remota, pois, como disse, o git não faz alterações em tempo real no repositório remoto, e as duas se comportam como entidades diferentes. Você não pode dar "checkout" em uma branch remota diretamente (não pode alterá-la diretamente) mas pode criar uma cópia local da mesma e "empurrar" (push) suas alterações para o remoto.
 
 Vamos dar checkout na branch mais-operações:
 
@@ -156,6 +176,33 @@ Os conflitos mostram as verões daquela parte do código em ambas as branches, e
 É também possível resolver conflitos pelo editor de texto/ide localmente. Alguns tornam esse processo bem mais simples e outros bem mais complicado, portanto deixo com você pesquisar e aprender como fazer isso localmente.
 
 E é isso! Agora você sabe como criar repositórios git locais, trabalhar com commits e branches, baixar um repositório público ou criar uma bifurcação dele e seguir trabalhando seja na sua versão, ou criando sugestões para o projeto original! Lembre-se, a documentação do próprio git é extremamente completa, e você sempre deve buscar guias e tutoriais para casos específicos que estiver enfrentando, essa é apenas uma introdução para te familiarizar com os conceitos. Não se esqueça também de manter um arquivo com os comandos mais úteis e resoluções para situações que encontrar.
+
+### Notas sobre trabalhar em forks:
+
+Quando vamos fazer modificações em um fork que desejamos que sejam aplicadas no repositório original, é ideia que criemos outra branch que não a master/main ou qualquer que seja a branch da qual vamos nos basear. Isso é o ideal pois, caso o projeto original atualize algo na branch na qual você se baseou, você poderá facilmente atualizar a sua branch com essas modificações, o que não seria possível caso você estivesse modificando a mesma branch.
+
+Para se manter atualizado com o repositório original, copie o link do repositório original e execute
+
+    git remote add upstream <link do repositório original>
+    git fetch upstream
+
+Upstream aqui indica que esse é o remoto "acima da corrente", ou seja, o original do qual nos baseamos para criar o nosso. A partir disso, podemos criar versões locais das branches do repositório original para mantermos as nossas branches atualizadas:
+
+    git checkout -b upstream_master upstream/master
+
+Esse comando irá criar uma branch local que é o espelho da branch master do repositório original. Note que, como não temos acesso ao repositório original, não podemos dar push nessa branch, e ela deve ser mantida sem modificações, apenas servido para nos manter atualizados. Podemos então fazer `git merge upstream_master` enquanto na nossa própria master para atualizá-la, e então `git checkout minha_branch` `git merge master` para atualizar a branch em que estivermos trabalhando.
+
+Lembre-se de não modificar a branch principal diretamente, para que sempre seja possível atualizar seu projeto com o upstream, e peridicamente execute:
+
+    git fetch upstream
+    git checkout upstream_master
+    git pull
+    git checkout master
+    git merge master_upstream
+
+E atualize outras branches em que estiver trabalhando, cuidando para resolver corretamente eventuais conflitos. Ao realizar o merge pela linha de comando (com `git merge`) temos que resolver o conflitos localmente. Como fazer isso depende um pouco de qual editor de texto estiver usando como o padrão do git, mas de forma geral, veja como em:
+
+[Resolvendo conflitos localmente](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line)
 
 ## Informações
 
