@@ -1,21 +1,24 @@
 import operacoes
 
-primeiro_numero = int(input('Entre com o primeiro número: '))
+while True:
+    primeiro_numero = int(input('Entre com o primeiro número: '))
 
-operacao = input('Entre com a operação: ')
+    operacao = input('Entre com a operação: ')
 
-segundo_numero = int(input('Entre com o segundo número: '))
+    segundo_numero = int(input('Entre com o segundo número: '))
 
-# Aqui usamos a funcionalidade do python de poder guardar funções em variáveis
-funcao = None
+    # Aqui usamos a funcionalidade do python de poder guardar funções em variáveis
+    funcao = None
 
-if operacao == 'soma' or operacao == '+':
-    funcao = operacoes.soma
-if operacao == 'subtração' or operacao == '-':
-    funcao = operacoes.subtracao
-if operacao == 'multiplicação' or operacao == '*':
-    funcao = operacoes.multiplicacao
-if operacao == 'divisão' or operacao == '/':
-    funcao = operacoes.divisao
+    if operacao == 'soma' or operacao == '+':
+        funcao = operacoes.soma
+    elif operacao == 'subtração' or operacao == '-':
+        funcao = operacoes.subtracao
+    elif operacao == 'multiplicação' or operacao == '*':
+        funcao = operacoes.multiplicacao
+    elif operacao == 'divisão' or operacao == '/':
+        funcao = operacoes.divisao
+    else:
+        break
 
-print('Resultado:', funcao(primeiro_numero, segundo_numero))
+    print('Resultado:', funcao(primeiro_numero, segundo_numero))
