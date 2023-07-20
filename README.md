@@ -177,6 +177,31 @@ Os conflitos mostram as verões daquela parte do código em ambas as branches, e
 
 E é isso! Agora você sabe como criar repositórios git locais, trabalhar com commits e branches, baixar um repositório público ou criar uma bifurcação dele e seguir trabalhando seja na sua versão, ou criando sugestões para o projeto original! Lembre-se, a documentação do próprio git é extremamente completa, e você sempre deve buscar guias e tutoriais para casos específicos que estiver enfrentando, essa é apenas uma introdução para te familiarizar com os conceitos. Não se esqueça também de manter um arquivo com os comandos mais úteis e resoluções para situações que encontrar.
 
+### Colocando um projeto local no GitHub
+
+Até agora, focamos em como contribuir e usar um repositório de terceiros no GitHub. Porém, de igual importância, é necessário saber como colocar um projeto já existente (ou novo) no GitHub.
+
+Primeiro, é necessário seguir os passos delineados no início para criar um repositório git, podendo ser na raiz da pasta de um projeto já existe ou em uma pasta vazia na qual você irá criar o projeto:
+
+    git innit
+    git add .
+    git commit -m "Primeiro commit"
+
+Importante: antes de executar `git add` e `git commit`, verifique se o projeto não possui arquivos com dados sensíveis, pastas de dependência/saída de compilação ou outros arquivos que não devem ser adicionados no repositório. Se existem, crie um arquivo `.gitignore` o configurando para ignorá-los.
+
+Após isso feito, clique em vá até o seu perfil no GitHub > Repositórios > Novo Repositório, e crie um repositório vazio (não adicione licença, README ou .gitignore, já que isso pode atrapalhar seu primeiro commit e pode ser feito mais tarde). Não se esqueça de selecionar corretamente se deve ser um repositório público ou privado. Após isso feito, você deve ter um repositório totalmente vazio:
+
+![Criando repo](./imagens/criar%20repo.png)
+
+![Repo vazio](./imagens/repo%20vazio.png)
+
+Após isso feito, copie o link do repositório (nesse caso `git@github.com:RafRunner/ExemploVazio.git`) e vá até o terminal no seu repositório novo:
+
+    git remote add origin <link do repositório>
+    git push -u origin main # ou master, mas main é novo padrão
+
+Volte ao GitHib e recarrega a página e voilà! Seu código agora está no GitHub! Após a primeira vez, não é necessário a parte `-u origin` do `git push`, ela serve para falar para o git que a branch atual deve estar em sincronia com a branch `main` do remoto `origin`, sendo necessária somente quando você for criar uma nova branch. Agora basta seguir as boas prática do GitHub, como adicionar uma licença para especificar como seu código pode ser usado, seguir as diretrizes da comunidade, não enviar dados sensíveis, evitar trabalhar diretamente na branch principal e etc.
+
 ### Notas sobre trabalhar em forks:
 
 Quando vamos fazer modificações em um fork que desejamos que sejam aplicadas no repositório original, é ideia que criemos outra branch que não a master/main ou qualquer que seja a branch da qual vamos nos basear. Isso é o ideal pois, caso o projeto original atualize algo na branch na qual você se baseou, você poderá facilmente atualizar a sua branch com essas modificações, o que não seria possível caso você estivesse modificando a mesma branch.
